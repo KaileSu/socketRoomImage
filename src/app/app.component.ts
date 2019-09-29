@@ -14,8 +14,10 @@ export class AppComponent  implements OnInit {
   firstRoomMessage: string;
   serRes = '';
   roomMessage: string;
+  imageFile: any;
   roomMessages: string[] = [];
-  chatService: ChatService;
+  roomImages: string[] = [];
+  chatService: any;
 
   constructor(chatService: ChatService) {
     this.chatService = chatService;
@@ -26,9 +28,6 @@ export class AppComponent  implements OnInit {
    add polyfills.ts:
    (window as any).global = window;
    */
-
-  
-
   roomList() {
     this.chatService.reqRoomList();
     this.chatService.getRoomlist().subscribe((m: string) => {
@@ -51,17 +50,34 @@ export class AppComponent  implements OnInit {
     this.roomMessage = '';
   }
 
+
+  imageSelected(files) {​
+    if (files.length > 0) {​
+         alert("imageSelected: " + files[0].name);​
+     }​
+    let fileReader = new FileReader();​
+    ​        fileReader.readAsDataURL(files[0]);​
+       fileReader.onload = e => {​
+         let buf = fileReader.result;​
+         this.chatService.sendRoomImage(buf);
+        console.log('room-image sent:');
+       };​
+    ​}​
+
+
   ngOnInit() {
     this.chatService.getRoomMessages().subscribe((m: string) => {
       this.roomMessages.push(m);
+    });
+
+    this.chatService.getRoomImages().subscribe((m: string) => {
+      this.roomImages.push(m);
     });
 
     this.chatService.getInitMessages().subscribe((m: string) => {
       this.firstRoomMessage = m;
       console.log(m);
     });
-    
-
   }
 
 

@@ -15,10 +15,11 @@ let io = socketIO(server);
 
 const port = process.env.PORT || 3000;
 
-let roomlist = ['room0','room1']; // intial a room for test
-var roomKeys = []; // just for testing socket.rooms
-var currentRoom = ''; // current room for a socket
-var socketRoom = []; // list of socket.id and joined room
+let roomlist = ['room0','room1']; 
+// intial a room for test
+
+var socketRoom = []; 
+// list of pairs of socket.id and the latest joined room
 
 io.on('connection', (socket) => {
     
@@ -44,26 +45,31 @@ io.on('connection', (socket) => {
             if (k == 1)
             {socketRoom.push([socket.id,room]); }
            
-            roomKeys = Object.keys(socket.rooms); 
+         // let roomKeys = Object.keys(socket.rooms); 
             if (roomlist.indexOf(room) == -1){roomlist.push(room);}
             io.to(room).emit('init-message', socket.id + " has joined into " + room);
-            // let all sockets in the room know someone joined
-            
-            
-            
-        });
-        
-    })
-    
-   
+            // let all sockets in the room know someone joined           
+        });        
+    })   
     // for pubic chatting in some room
     socket.on('new-room-message', (message) => {
         console.log('room message got by server:' + message);
         console.log(JSON.stringify(socket.rooms));
         for (let i=0; i<socketRoom.length;i++){
             if (socketRoom[i][0] == socket.id ){
-                currentRoom = socketRoom[i][1]
+               let currentRoom = socketRoom[i][1]
                 io.to(currentRoom).emit('new-room-message', message+' said by ' + socket.id + ' in ' + currentRoom);
+            }
+        }       
+    });
+
+    socket.on('new-room-image', (message) => {
+        console.log('room message got by server:' + message);
+        console.log(JSON.stringify(socket.rooms));
+        for (let i=0; i<socketRoom.length;i++){
+            if (socketRoom[i][0] == socket.id ){
+               let currentRoom = socketRoom[i][1]
+                io.to(currentRoom).emit('new-room-image', message);
             }
         }       
     });

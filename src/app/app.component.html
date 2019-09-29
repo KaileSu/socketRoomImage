@@ -29,6 +29,22 @@
 <input [(ngModel)]="roomMessage" />
 <button (click)="sendRoomMessage()">Send in Room</button>
 
+<h3>image Sending at the selected room </h3>
+
+<div *ngFor="let imageSrc of roomImages"> 
+  <img src="{{imageSrc}}">
+
+</div>
+
+
+ 
+<input #fileInput type="file" accept="image/*" 
+(change)="imageSelected(fileInput.files)" multiple>​
+
+
+​
+
+
 
 
 

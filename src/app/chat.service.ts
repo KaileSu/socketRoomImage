@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 // npm install @types/socket.io-client
-import {Router} from '@angular/router'; // may not be used in this project
-
+import {Router} from '@angular/router'; 
 import { Observable } from 'rxjs';
 // no working import { Observable } from 'rxjs/Observable'
 
@@ -44,9 +43,18 @@ export class ChatService {
     });
   }
 
-  
+  public sendRoomImage(m) {
+    this.socket.emit('new-room-image', m);
+    console.log('new-room-image sent service');
+  }
 
-  
+  public getRoomImages = () => {
+    return Observable.create((observer) => {
+        this.socket.on('new-room-image', (m) => {
+            observer.next(m);
+        });
+    });
+  }
 
 
   public sendRoomMessage(m) {

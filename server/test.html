@@ -1,0 +1,11 @@
+public getMessages = () => {
+    return Observable.create((observer) => {
+        this.socket.on('new-message', (message) => {
+            observer.next(message);
+        });
+    });
+}
+
+subscribe((message: string) => {
+    this.messages.push(message);
+  });
