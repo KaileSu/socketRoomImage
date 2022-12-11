@@ -22,7 +22,7 @@
     "@angular/router": "^8.0.1",
     "@types/socket.io-client": "^1.4.32",
     "core-js": "^3.1.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "nodemon": "^1.19.1",
     "rxjs": "^6.5.2",
     "socket.io": "^2.2.0",
